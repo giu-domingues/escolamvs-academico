@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+
+    <div th:replace="fragments/config :: confragment"></div>
+
+    <title>Listagem</title>
+</head>
+<body>
+<div class="container">
+
+    <div th:replace="fragments/header :: cabecalho"></div>
+    <div class="row">
+        <div class="col-12">
+            <h1>Listagem de alunos</h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-6">
+            <form th:action="@{/aluno/buscar}" method="post" name="buscar">
+                <div class="input-group">
+
+                    <input th:type="text" class="form-control" name="nome">
+                    <button class="btn btn-primary" type="submit" value="buscar">Buscar</button>
+
+
+                </div>
+            </form>
+
+        </div>
+        <div class="col-6">
+            <a th:href="@{/aluno/novo}" class="btn btn-success" style="float: right">Cadastrar</a>
+        </div>
+    </div>
+    <br>
+    <br>
+
+    <div th:if="${mensagem}" class="alert alert-success alert-dismissible fade show" role="alert">
+        <span th:text="${mensagem}"></span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Matricula</th>
+            <th>Nome</th>
+            <th>E-mail</th>
+            <th>CPF</th>
+            <th>Data de nascimento</th>
+            <th>Ações</th>
+
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="aluno : ${alunos}">
+            <td><span th:text="${aluno.id}"> Id </span></td>
+            <td><span th:text="${aluno.matricula}"> Matrícula </span></td>
+            <td><span th:text="${aluno.nome}"> Nome </span></td>
+            <td><span th:text="${aluno.email}"> Email </span></td>
+            <td><span th:text="${aluno.cpf}"> CPF </span></td>
+            <td><span th:text="${aluno.dataNascimento}"> Data de nascimento</span></td>
+            <td>
+                <a class="btn btn-outline-danger btn-sm"
+                   th:href="@{/aluno/excluir/{id}(id=${aluno.id})}"
+                   th:data-confirm-delete="|Você gostaria de apagar ${aluno.nome}?|"
+                   onclick="if (!confirm(this.getAttribute('data-confirm-delete'))) return false">
+                    Apagar
+                </a>
+
+                <a class="btn btn-outline-primary btn-sm"
+                   th:href="@{/aluno/alterar/{id}(id=${aluno.id})}">Editar
+                </a>
+
+            </td>
+        </tr>
+        </tbody>
+
+    </table>
+
+</div>
+
+<div th:replace="fragments/footer :: rodape"></div>
+</body>
+</html>
